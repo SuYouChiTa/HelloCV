@@ -2,7 +2,7 @@
 
 > 本文件汇总纳新培训期间撰写的全部语雀笔记链接。
 >
-> 作者：nailya　|　最后更新：2026-10-09
+> 作者：nailya　|　最后更新：2026-10-10
 
 ---
 
@@ -30,10 +30,10 @@
 
 | 序号 | 笔记标题 | 类型 | 内容概要 | 链接 |
 |---|---|---|---|---|
-| 2 | （待补充）Git 学习与实践记录 | 学习内容 | Git 三大区域、常用命令、分支管理与冲突解决、远程仓库操作 | 待补充 |
-| 3 | （待补充）计算器开发实践记录 | 实践任务 | Gitee 仓库 `git_training`、加减法分支与乘除法分支开发及合并、Git 命令使用过程与输出 | 待补充 |
+| 2 | Git 学习内容笔记 | 学习内容 | Git 的作用、工作区/暂存区/仓库三大区域、常用命令与理解、`fetch` 与 `pull` 的区别、合并冲突解决、Rebasing 工作流、Pull Request 流程、易混淆点整理 | [《Git学习内容笔记》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/gf8gpefqc1x9nfbs?singleDoc#) |
+| 3 | Git 实践任务笔记 | 实践任务 | 仓库 `git_training`（Gitee）、SSH 密钥与用户配置、计算器开发全过程、加减法分支与乘除法分支的开发及合并、`git stash` 练习、远程同步、编译产物与 `.gitignore` 处理、踩坑汇总 | [《Git实践任务笔记》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/wn8ykilgifqw8x6p?singleDoc#) |
 
-> Git 部分完成后，将在此处补上对应语雀笔记链接与 `git_training` 仓库地址。
+> 说明：两篇笔记分别对应任务"学习内容"与"实践任务"的要求，实践任务配套代码仓库为 [gitee.com/yuwen-ling/git_training](https://gitee.com/yuwen-ling/git_training)（公开）。
 
 ---
 
@@ -42,12 +42,12 @@
 | 仓库 | 说明 | 链接 |
 |---|---|---|
 | HelloCV | 本仓库：培训任务提交仓库，含 README 与笔记索引 | https://github.com/SuYouChiTa/HelloCV |
-| git_training | Git 实践任务：计算器开发（Gitee 仓库） | 待补充 |
+| git_training | Git 实践任务：C++ 四则运算计算器开发（Gitee 仓库，含加减法/乘除法分支开发与合并记录） | https://gitee.com/yuwen-ling/git_training |
 
 ---
 
 ## 四、备注
 
-- 笔记中的命令均在实际环境（VMware + Ubuntu 26.04.1 LTS + ROS 2 `lyrical`）中执行并验证；
+- 笔记中的命令均在实际环境（VMware + Ubuntu 26.04.1 LTS + ROS 2 `lyrical`；Windows Git Bash + Gitee 远程仓库）中执行并验证；
 - 若某个链接无法访问，可能是语雀的公开权限设置问题，请通过 Issues 反馈；
 - 引用网络资料之处已在笔记中标注来源。
