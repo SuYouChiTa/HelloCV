@@ -2,7 +2,7 @@
 
 > 本文件汇总纳新培训期间撰写的全部语雀笔记链接。
 >
-> 作者：nailya　|　最后更新：2026-10-10
+> 作者：nailya　|　最后更新：2026-10-15
 
 ---
 
@@ -35,13 +35,25 @@
 
 > 说明：两篇笔记分别对应任务"学习内容"与"实践任务"的要求，实践任务配套代码仓库为 [gitee.com/yuwen-ling/git_training](https://gitee.com/yuwen-ling/git_training)（公开）。
 
+### 2.3 LLM 决策网关
+
+| 序号 | 笔记标题 | 类型 | 内容概要 | 链接 |
+|---|---|---|---|---|
+| 4 | LLM网关-AI协作学习记录 | 学习内容 + 实践任务 | 为什么选 DSH 做 Agent 平台、与 AI 协作补全网关的完整过程（拆解任务 / 逐个实现 / 三轮测试收敛 / 真实 API 验证）、10 个函数分别起什么作用（附 C++ 类比）、运行验证与截图、踩坑与解决汇总 | [《LLM网关-AI协作学习记录》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/hp723ckq1xvl1txf?singleDoc#) |
+
+> **说明**：该笔记对应任务"（三）LLM"的实践任务要求——在 Agent 帮助下补全 `/skeleton`，完成与 LLM 进行石头剪刀布的目标。包含：
+> 1. **学习内容**：LLM 与 Agent 的关系、Chat Completions 协议、JSON 输出模式与提示词要求、模型输出为什么不可信、HTTP 重试策略分类、网关作为"可信边界"的设计原则；
+> 2. **实践任务**：补全 JSON 容错层 / 决策规则层 / 上游通信层 / 主流水线共 10 个函数，93 项单元测试全部通过，使用 **DeepSeek 官方 API** 完成真实对局，并用本地假上游压测容错能力。
+>
+> 配套代码在本仓库 [`llm-gateway/`](../llm-gateway/) 目录。
+
 ---
 
 ## 三、相关仓库
 
 | 仓库 | 说明 | 链接 |
 |---|---|---|
-| HelloCV | 本仓库：培训任务提交仓库，含 README 与笔记索引 | https://github.com/SuYouChiTa/HelloCV |
+| HelloCV | 本仓库：培训任务提交仓库，含 README、笔记索引，以及 LLM 网关关键脚本 [`llm-gateway/`](../llm-gateway/) | https://github.com/SuYouChiTa/HelloCV |
 | git_training | Git 实践任务：C++ 四则运算计算器开发（Gitee 仓库，含加减法/乘除法分支开发与合并记录） | https://gitee.com/yuwen-ling/git_training |
 
 ---
