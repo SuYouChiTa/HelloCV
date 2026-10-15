@@ -1,0 +1,36 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 环境变量与密钥（绝不提交）----
+.env
+.env.*
+*.key
+secrets.json
+
+# ---- C / C++ 编译产物 ----
+build/
+*.o
+*.obj
+*.exe
+*.out
+a.out
+
+# ---- 编辑器与系统 ----
+.vscode/
+.idea/
+*.swp
+Thumbs.db
+desktop.ini
+
+# ---- 日志与临时文件 ----
+*.log
+*.tmp
