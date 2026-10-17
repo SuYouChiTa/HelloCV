@@ -2,7 +2,7 @@
 
 > 本文件汇总纳新培训期间撰写的全部语雀笔记链接。
 >
-> 作者：nailya　|　最后更新：2026-10-15
+> 作者：nailya　|　最后更新：2026-10-17
 
 ---
 
@@ -47,13 +47,21 @@
 >
 > 配套代码在本仓库 [`llm-gateway/`](../llm-gateway/) 目录。
 
+### 2.4 CMake 构建系统
+
+| 序号 | 笔记标题 | 类型 | 内容概要 | 链接 |
+|---|---|---|---|---|
+| 5 | CMake 学习内容笔记 | 学习内容 | CMake 解决的三个痛点、目标（可执行文件/库）、源码外构建、PUBLIC/PRIVATE 传递依赖、命令清单与理解、配置期/编译期/链接期错误分辨、两个 CMakeLists 的分工 | [《CMake学习内容笔记》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/onlt3g6pviouww59?singleDoc#) |
+| 6 | CMake 实践任务笔记 | 实践任务 | 单位转换器项目（严格目录结构）、unitlib 库设计与六个换算函数、两个 CMakeLists 逐段讲解、`cmake ..`+`make` 四步证据、6 组换算验证、`find_package`/`install` 验证、8 条踩坑汇总 | [《CMake实践任务笔记》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/ckpfnfs0gsgi98lg?singleDoc#) |
+
+> **说明**：两篇笔记分别对应任务"学习内容"与"实践任务"的要求。配套代码在本仓库 [`UnitConverter/`](../UnitConverter/) 目录，包含根目录与 `unitlib/` 下**两个** `CMakeLists.txt`，用 CMake 构建静态库 `libunitlib.a` 与可执行文件 `unitconv`。
 ---
 
 ## 三、相关仓库
 
 | 仓库 | 说明 | 链接 |
 |---|---|---|
-| HelloCV | 本仓库：培训任务提交仓库，含 README、笔记索引，以及 LLM 网关关键脚本 [`llm-gateway/`](../llm-gateway/) | https://github.com/SuYouChiTa/HelloCV |
+| HelloCV | 本仓库：培训任务提交仓库，含 README、笔记索引，以及 CMake 单位转换器 [`UnitConverter/`](../UnitConverter/) 与 LLM 网关 [`llm-gateway/`](../llm-gateway/) 的关键代码 | https://github.com/SuYouChiTa/HelloCV |
 | git_training | Git 实践任务：C++ 四则运算计算器开发（Gitee 仓库，含加减法/乘除法分支开发与合并记录） | https://gitee.com/yuwen-ling/git_training |
 
 ---
@@ -62,4 +70,5 @@
 
 - 笔记中的命令均在实际环境（VMware + Ubuntu 26.04.1 LTS + ROS 2 `lyrical`；Windows Git Bash + Gitee 远程仓库）中执行并验证；
 - 若某个链接无法访问，可能是语雀的公开权限设置问题，请通过 Issues 反馈；
+- CMake 实践任务在 Ubuntu（GCC 15.2.0 + CMake 4.2.3）与 Windows（MinGW g++ + `-G "MinGW Makefiles"`）双环境下构建验证；
 - 引用网络资料之处已在笔记中标注来源。
