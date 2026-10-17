@@ -29,3 +29,12 @@ target_compile_options(unitconv
         -Wall
         -Wextra
 )
+
+# ==== 可选练习：find_package（查找第三方包）====
+find_package(Threads REQUIRED)
+target_link_libraries(unitconv PRIVATE Threads::Threads)
+
+# ==== 可选练习：install（安装规则）====
+install(TARGETS unitconv RUNTIME DESTINATION bin)
+install(TARGETS unitlib  ARCHIVE DESTINATION lib)
+install(FILES unitlib/include/unitlib.h DESTINATION include)
