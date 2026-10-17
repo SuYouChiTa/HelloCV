@@ -337,7 +337,7 @@ python play_game.py --rounds 6 --api-base-url http://127.0.0.1:8801 --api-key te
 
 ## 七、使用方法
 
-1. **了解培训内容**：先阅读本文件的"环境配置步骤"（Linux 部分）、"LLM 决策网关实践"（LLM 部分）与"Git 版本控制实践"（Git 部分），了解所需的软硬件与操作流程；
+1. **了解培训内容**：先阅读本文件的"环境配置步骤"（Linux 部分）、"Git 版本控制实践"（Git 部分）、"CMake 构建实践"（CMake 部分）与"LLM 决策网关实践"（LLM 部分），了解所需的软硬件与操作流程；
 2. **查看完整学习记录**：打开 [`docs/notes-index.md`](docs/notes-index.md)，其中列出全部语雀笔记链接，按主题分类；
 3. **复现环境**：按第三节的命令顺序执行（顺序为：系统更新 → 常用工具 → Node/npm/PM2 → VS Code/ROS2 → SSH 配置）；
 4. **复现 LLM 网关**：按第六节 6.2 的步骤配置 API Key 并运行；离线模式不需要 Key，可先跑通流水线。关键脚本见 [`llm-gateway/`](llm-gateway/)；
