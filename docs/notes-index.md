@@ -2,7 +2,7 @@
 
 > 本文件汇总纳新培训期间撰写的全部语雀笔记链接。
 >
-> 作者：nailya　|　最后更新：2026-10-17
+> 作者：nailya　|　最后更新：2026-10-24
 
 ---
 
@@ -55,6 +55,13 @@
 | 6 | CMake 实践任务笔记 | 实践任务 | 单位转换器项目（严格目录结构）、unitlib 库设计与六个换算函数、两个 CMakeLists 逐段讲解、`cmake ..`+`make` 四步证据、6 组换算验证、`find_package`/`install` 验证、8 条踩坑汇总 | [《CMake实践任务笔记》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/ckpfnfs0gsgi98lg?singleDoc#) |
 
 > **说明**：两篇笔记分别对应任务"学习内容"与"实践任务"的要求。配套代码在本仓库 [`UnitConverter/`](../UnitConverter/) 目录，包含根目录与 `unitlib/` 下**两个** `CMakeLists.txt`，用 CMake 构建静态库 `libunitlib.a` 与可执行文件 `unitconv`。
+### 2.5 ROS2 机器人开发框架
+
+| 序号 | 笔记标题 | 类型 | 内容概要 | 链接 |
+|---|---|---|---|---|
+| 7 | ROS2学习与实操记录 | 学习内容 + 实践任务 | ROS2 是什么（节点化与通信）、工作空间与功能包（`package.xml` 与 `CMakeLists.txt` 的分工）、C++ 节点编写（`rclcpp::Publisher` / `Subscription`）、话题与 QoS、服务（`AddTwoInts`）、参数（启动传参与运行期修改的差异）、`.launch.py`（多节点 / 参数 / remap）、TF 树与 RViz；含 13 条踩坑与真实命令输出 | [《ROS2学习与实操记录》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/nbtqkcvi10cb8k8s?singleDoc#) |
+
+> **说明**：第三次任务不强制实践任务，但要求文档中有实操记录。因此我在虚拟机（Ubuntu 26.04.1 + ROS 2 `lyrical`）里建了 `~/ros2_ws` 工作空间与 `demo_pkg` 功能包，把八项考核目标逐个跑通并截图记录；参考文档基于 Humble，与 lyrical 的版本差异已在笔记"踩坑汇总"中说明。
 ---
 
 ## 三、相关仓库
@@ -71,4 +78,5 @@
 - 笔记中的命令均在实际环境（VMware + Ubuntu 26.04.1 LTS + ROS 2 `lyrical`；Windows Git Bash + Gitee 远程仓库）中执行并验证；
 - 若某个链接无法访问，可能是语雀的公开权限设置问题，请通过 Issues 反馈；
 - CMake 实践任务在 Ubuntu（GCC 15.2.0 + CMake 4.2.3）与 Windows（MinGW g++ + `-G "MinGW Makefiles"`）双环境下构建验证；
+- ROS2 实操在 Ubuntu 26.04.1 LTS + ROS 2 `lyrical` 环境下完成（工作空间与功能包在本地虚拟机中，命令与输出见笔记）；
 - 引用网络资料之处已在笔记中标注来源。

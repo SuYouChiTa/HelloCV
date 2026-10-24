@@ -1,6 +1,6 @@
 # HelloCV
 
-> 纳新培训任务仓库 —— Linux 系统基础与开发环境搭建、Git 版本控制工具、CMake 构建系统、LLM 决策网关、学习笔记索引
+> 纳新培训任务仓库 —— Linux 系统基础与开发环境搭建、Git 版本控制工具、CMake 构建系统、LLM 决策网关、ROS2 机器人开发框架、学习笔记索引
 >
 > 作者：**nailya**（GitHub: [@SuYouChiTa](https://github.com/SuYouChiTa)）　|　创建时间：2026-09-28
 
@@ -13,7 +13,7 @@
 1. 用 `README.md` 说明**仓库结构、环境配置步骤与使用方法**，让任何人都能快速了解本项目的组织方式；
 2. 用 [`docs/notes-index.md`](docs/notes-index.md) 汇总培训期间的全部**语雀笔记链接**，方便查看完整学习记录（含截图与操作过程）。
 
-培训任务包含两次任务、共四个部分，本仓库对应**第一部分（Linux）**、**第二部分（Git）**、**第三部分（CMake）**与**第四部分（LLM 决策网关）**，四部分均已完成：
+培训任务包含三次任务、共五个部分，本仓库对应**第一部分（Linux）**、**第二部分（Git）**、**第三部分（CMake）**、**第四部分（LLM 决策网关）**与**第五部分（ROS2）**，五部分均已完成：
 
 | 部分 | 内容 | 状态 |
 |---|---|---|
@@ -21,6 +21,7 @@
 | 第二部分 | Git 版本控制工具（配置 Git 与 SSH 密钥、使用 Git 完成四则运算计算器开发，仓库 [`git_training`](https://gitee.com/yuwen-ling/git_training)） | 已完成 |
 | 第三部分 | CMake 构建系统（单位转换器项目：根+库两个 CMakeLists、静态库与可执行文件、源码外构建，代码见 [`UnitConverter/`](UnitConverter/)） | 已完成 |
 | 第四部分 | LLM 决策网关（补全网关骨架，与 LLM 进行石头剪刀布，使用 DeepSeek 官方 API，代码见 [`llm-gateway/`](llm-gateway/)） | 已完成 |
+| 第五部分 | ROS2 机器人开发框架（工作空间与功能包、C++ 节点、话题/服务/参数、launch、TF 与 RViz；完整实操记录见语雀笔记） | 已完成 |
 
 > 仓库名 `HelloCV` 沿用第一次任务的要求，实际作为三次培训任务的统一提交仓库使用。
 
@@ -335,20 +336,101 @@ python play_game.py --rounds 6 --api-base-url http://127.0.0.1:8801 --api-key te
 
 ---
 
-## 七、使用方法
+---
 
-1. **了解培训内容**：先阅读本文件的"环境配置步骤"（Linux 部分）、"Git 版本控制实践"（Git 部分）、"CMake 构建实践"（CMake 部分）与"LLM 决策网关实践"（LLM 部分），了解所需的软硬件与操作流程；
+## 七、ROS2 学习与实操（第五部分）
+
+第三次任务的主题是 **ROS2**。本周不强制实践任务，但要求语雀文档中**必须有实操记录**，因此我在虚拟机里建了一个小工作空间，把八项考核目标（工作空间与功能包、C++ 节点、话题、服务、参数、launch、TF 与 RViz）各跑了一遍，并把命令与真实输出记进笔记。
+
+### 7.1 环境
+
+| 项目 | 内容 |
+|---|---|
+| 系统 | Ubuntu 26.04.1 LTS |
+| ROS 2 发行版 | `lyrical`（`printenv ROS_DISTRO` 验证） |
+| 工作空间 | `~/ros2_ws`，功能包 `demo_pkg`（`ament_cmake`，C++） |
+
+环境加载（写进 `~/.bashrc`，新终端自动生效）：
+
+```bash
+source /opt/ros/lyrical/setup.bash
+if [ -f ~/ros2_ws/install/setup.bash ]; then
+    source ~/ros2_ws/install/setup.bash
+fi
+```
+
+### 7.2 工作空间与功能包
+
+```bash
+mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
+ros2 pkg create demo_pkg --build-type ament_cmake \
+  --dependencies rclcpp std_msgs example_interfaces --license Apache-2.0
+cd ~/ros2_ws && colcon build && source install/setup.bash
+```
+
+| 目录 | 作用 | 是否提交 |
+|---|---|---|
+| `src/` | 源码（功能包放在这里） | ✅ |
+| `build/` | 编译中间产物（CMakeCache、`.o`、Makefile） | ❌ |
+| `install/` | 安装结果，`ros2 run` 从这里找程序 | ❌ |
+| `log/` | 每次构建的日志 | ❌ |
+
+### 7.3 最小节点对与构建规则
+
+- `talker`：`create_publisher<std_msgs::msg::String>("chatter", 10)` + `create_wall_timer`
+- `listener`：`create_subscription<std_msgs::msg::String>("chatter", 10, lambda)`
+
+`CMakeLists.txt` 里三组关键语句：
+
+```cmake
+add_executable(talker src/talker.cpp)
+target_link_libraries(talker PUBLIC rclcpp::rclcpp std_msgs::std_msgs)
+install(TARGETS talker listener DESTINATION lib/${PROJECT_NAME})
+```
+
+> `install(...)` 不能漏：漏了之后 `ros2 run` 会报 `No executable found`（真正的原因是可执行文件没被放进 `install/`）。
+
+### 7.4 常用命令（均已实测）
+
+| 操作 | 命令 |
+|---|---|
+| 运行单个节点 | `ros2 run demo_pkg talker` |
+| 一次启动多个节点 | `ros2 launch demo_pkg demo.launch.py` |
+| 节点 | `ros2 node list` / `ros2 node info /talker` |
+| 话题 | `ros2 topic list` / `echo` / `info` / `pub` |
+| 服务 | `ros2 service list` / `ros2 service call` |
+| 参数 | `ros2 param list` / `get` / `set` |
+| TF | `ros2 run tf2_tools view_frames`、`ros2 run tf2_ros tf2_echo` |
+
+### 7.5 实践要点
+
+| 项目 | 实测结论 |
+|---|---|
+| 话题 | talker 按 1Hz 发布，listener 同步接收；`topic info` 显示 `Publisher count: 1`、`Subscription count: 1` |
+| QoS | 默认 Durability 为 `volatile`：listener 晚启动时**从当前计数开始收**，收不到历史消息；是否补历史由 `volatile` / `transient_local` 决定 |
+| 服务 | 用 `demo_nodes_cpp` 的 `add_two_ints_server`，命令行 `service call` 得到 `sum=8`；请求-响应一次即结束（不同于 topic 持续推送） |
+| 参数 | **launch 启动时**传 `rate_hz: 2.0` → 实测变为 2Hz（时间戳间隔 0.5s）；**运行中** `param set` 虽返回成功且 `get` 能读到新值，但**行为不变**（代码只在启动时读取一次，未注册回调） |
+| launch | 一条命令起两个节点；`name=` 改节点名、`parameters` 传参、`remappings` 把 `/chatter` 改为 `/chat_remapped`，**源码零改动** |
+| TF / RViz | `static_transform_publisher` 发布 `world → base_link`；`view_frames` 导出 TF 树（文件名带时间戳）；RViz 中把 `Fixed Frame` 从默认 `map` 改为 `world` 后 `Global Status: Ok` |
+| 版本差异 | 参考文档是 **Humble**，本机是 **lyrical**：`static_transform_publisher` 已改为必须用 `--frame-id` / `--child-frame-id`（位置参数不再识别）；`view_frames` 输出改为 `frames_<时间戳>.pdf` |
+| 常见困惑 | "包明明 build 成功了，为什么新终端说找不到？" —— 环境变量是 **per-shell** 的，新终端必须重新 `source install/setup.bash`（或写进 `~/.bashrc`） |
+
+> 完整的命令输出、12 张截图与 **13 条踩坑**记录，见语雀 [《ROS2学习与实操记录》](https://www.yuque.com/yuwenling-mwwvy/xopzgx/nbtqkcvi10cb8k8s?singleDoc#)。
+## 八、使用方法
+
+1. **了解培训内容**：先阅读本文件的"环境配置步骤"（Linux 部分）、"Git 版本控制实践"（Git 部分）、"CMake 构建实践"（CMake 部分）、"LLM 决策网关实践"（LLM 部分）与"ROS2 学习与实操"（ROS2 部分），了解所需的软硬件与操作流程；
 2. **查看完整学习记录**：打开 [`docs/notes-index.md`](docs/notes-index.md)，其中列出全部语雀笔记链接，按主题分类；
 3. **复现环境**：按第三节的命令顺序执行（顺序为：系统更新 → 常用工具 → Node/npm/PM2 → VS Code/ROS2 → SSH 配置）；
 4. **复现 LLM 网关**：按第六节 6.2 的步骤配置 API Key 并运行；离线模式不需要 Key，可先跑通流水线。关键脚本见 [`llm-gateway/`](llm-gateway/)；
 5. **复现 Git 实践**：按第四节的流程创建分支、开发、合并并推送；配套代码见 [`git_training`](https://gitee.com/yuwen-ling/git_training)；
 6. **复现 CMake 实践**：进入 `UnitConverter/`，`mkdir build && cd build && cmake .. && make`（Windows 下用 `cmake -S . -B build -G "MinGW Makefiles"`）；代码见 [`UnitConverter/`](UnitConverter/)；
-7. **核对结果**：每条命令的预期输出与验证方式，均记录在对应的语雀笔记中（含终端截图）；
-8. **遇到问题**：各篇笔记末尾整理了培训期间遇到的报错（Linux 15 类、Git 15 类、CMake 8 类，LLM 部分见"踩坑与解决汇总"一节）及其原因与解决办法，可先在那里检索。
+7. **复现 ROS2 实践**：`source /opt/ros/lyrical/setup.bash` 后，按`mkdir -p ~/ros2_ws/src` → `ros2 pkg create` → `colcon build` 的流程建包；命令与预期输出见语雀《ROS2学习与实操记录》。
+8. **核对结果**：每条命令的预期输出与验证方式，均记录在对应的语雀笔记中（含终端截图）；
+9. **遇到问题**：各篇笔记末尾整理了培训期间遇到的报错（Linux 15 类、Git 15 类、CMake 8 类、ROS2 13 类，LLM 部分见"踩坑与解决汇总"一节）及其原因与解决办法，可先在那里检索。
 
 ---
 
-## 八、学习内容一览
+## 九、学习内容一览
 
 本阶段覆盖的知识点（详细内容见语雀笔记）：
 
@@ -365,15 +447,17 @@ python play_game.py --rounds 6 --api-base-url http://127.0.0.1:8801 --api-key te
 | 版本控制 | Git 三大区域、分支开发与合并（含 `--no-ff`）、`git stash`、远程同步（`push`/`pull`/`rebase`）、`.gitignore` 与编译产物管理、Pull Request 流程 |
 | CMake 构建 | 目标（可执行文件 / 静态库）、两个 CMakeLists 的分工、`PUBLIC`/`PRIVATE` 传递依赖、源码外构建、`find_package`、`install`、配置期 / 编译期 / 链接期错误的分辨 |
 | LLM 与 Agent | 大模型与 Agent 的关系、Chat Completions 协议、JSON 输出模式与提示词要求、模型输出的不可信性与容错、HTTP 重试策略分类、网关作为"可信边界"的设计 |
+| ROS2 | 工作空间与功能包（`package.xml` / `CMakeLists.txt` 分工）、C++ 节点（`rclcpp::Publisher` / `Subscription`）、话题与 QoS、服务（Client-Server）、参数（启动传参与运行期修改的差异）、`.launch.py`（多节点 / 参数 / remap）、TF 树与 RViz 可视化 |
 
 ---
 
-## 九、备注
+## 十、备注
 
 - 仓库内所有命令均在 Ubuntu 26.04.1 LTS（ROS 2 `lyrical`）、Windows Git Bash 与 Windows PowerShell 环境中实际执行并验证；
 - 培训任务书写作时的推荐版本为 Ubuntu 22.04，实际安装 26.04.1 LTS 的原因与差异已记录在对应笔记中；
 - Git 实践任务的代码仓库为 [`git_training`](https://gitee.com/yuwen-ling/git_training)（Gitee，公开）；
 - CMake 实践任务的代码在本仓库 [`UnitConverter/`](UnitConverter/) 中，Linux 下用 GCC + CMake 4.2.3 构建，Windows 下用 MinGW + `-G "MinGW Makefiles"`；
 - LLM 决策网关的代码在本仓库 [`llm-gateway/`](llm-gateway/) 中，上游为 DeepSeek 官方 API；
+- ROS2 部分为自学实操：工作空间 `~/ros2_ws` 与功能包 `demo_pkg` 建在本地虚拟机中，命令、输出与截图完整记录在语雀笔记；参考文档基于 **Humble**，本机安装的是 **lyrical**，版本差异已在笔记中记录；
 - 引用网络教程之处均已标注来源；
 - 仓库保持**公开**，便于评阅；如发现链接无法访问，请通过 Issues 告知。

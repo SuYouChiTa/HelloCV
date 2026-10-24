@@ -34,3 +34,7 @@ desktop.ini
 # ---- 日志与临时文件 ----
 *.log
 *.tmp
+
+# ---- ROS2 / colcon 构建产物 ----
+install/
+log/
